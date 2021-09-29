@@ -7,7 +7,7 @@ var store = DocumentStore.For(_ =>
 {
     _.Connection("host=localhost;database=marten_test;password=not_magical_scary;username=banking_user");
 
-    _.AutoCreateSchemaObjects = AutoCreate.All;
+    _.AutoCreateSchemaObjects = AutoCreate.All; //.All will wipe out the schema each time this is run
 
     _.Events.AddEventTypes(new[] {
                     typeof(AccountCreated),
@@ -18,6 +18,7 @@ var store = DocumentStore.For(_ =>
     _.Events.InlineProjections.AggregateStreamsWith<Account>();
 });
 
+// Establish Accounts
 var khalid = new AccountCreated
 {
     Owner = "Khalid Abuhakmeh",
@@ -31,6 +32,7 @@ var bill = new AccountCreated
     AccountId = Guid.NewGuid()
 };
 
+// Create Accounts
 using (var session = store.OpenSession())
 {
     // create banking accounts
@@ -40,6 +42,7 @@ using (var session = store.OpenSession())
     session.SaveChanges();
 }
 
+// First Transaction
 using (var session = store.OpenSession())
 {
     // load khalid's account
@@ -63,7 +66,7 @@ using (var session = store.OpenSession())
     session.SaveChanges();
 }
 
-
+// Second Transaction
 using (var session = store.OpenSession())
 {
     // load bill's account
@@ -95,6 +98,7 @@ using (var session = store.OpenSession())
     session.SaveChanges();
 }
 
+// Query the Account Balance from Projection 
 using (var session = store.LightweightSession())
 {
     Console.WriteLine();
@@ -109,6 +113,7 @@ using (var session = store.LightweightSession())
     }
 }
 
+// List the account activity
 using (var session = store.LightweightSession())
 {
     foreach (var account in new[] { khalid, bill })
