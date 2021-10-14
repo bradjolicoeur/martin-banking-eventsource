@@ -5,13 +5,13 @@ using Marten.Events.Projections;
 using System;
 using Weasel.Postgresql;
 
-var store = DocumentStore.For(_ =>
+var store = DocumentStore.For(opts =>
 {
-    _.Connection("host=localhost;database=marten_test;password=not_magical_scary;username=banking_user");
+    opts.Connection("host=localhost;database=marten_test;password=not_magical_scary;username=banking_user");
 
-    _.AutoCreateSchemaObjects = AutoCreate.All; //.All will wipe out the schema each time this is run
+    opts.AutoCreateSchemaObjects = AutoCreate.All; //.All will wipe out the schema each time this is run
 
-    _.Projections.SelfAggregate<Account>(ProjectionLifecycle.Inline); //Configure inline projection
+    opts.Projections.SelfAggregate<Account>(ProjectionLifecycle.Inline); //Configure inline projection
 
 });
 
