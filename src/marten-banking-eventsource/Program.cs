@@ -1,7 +1,9 @@
 ﻿using Accounting.Events;
 using Accounting.Projections;
 using Marten;
+using Marten.Events.Projections;
 using System;
+using Weasel.Postgresql;
 
 var store = DocumentStore.For(_ =>
 {
@@ -9,13 +11,8 @@ var store = DocumentStore.For(_ =>
 
     _.AutoCreateSchemaObjects = AutoCreate.All; //.All will wipe out the schema each time this is run
 
-    _.Events.AddEventTypes(new[] {
-                    typeof(AccountCreated),
-                    typeof(AccountCredited),
-                    typeof(AccountDebited)
-                });
+    _.Projections.SelfAggregate<Account>(ProjectionLifecycle.Inline); //Configure inline projection
 
-    _.Events.InlineProjections.AggregateStreamsWith<Account>();
 });
 
 // Establish Accounts
@@ -36,8 +33,8 @@ var bill = new AccountCreated
 using (var session = store.OpenSession())
 {
     // create banking accounts
-    session.Events.Append(khalid.AccountId, khalid);
-    session.Events.Append(bill.AccountId, bill);
+    session.Events.StartStream(khalid.AccountId, khalid);
+    session.Events.StartStream(bill.AccountId, bill);
 
     session.SaveChanges();
 }
