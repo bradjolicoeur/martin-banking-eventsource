@@ -89,7 +89,7 @@ using (var session = store.OpenSession())
     {
         session.Events.Append(account.Id, new InvalidOperationAttempted
         {
-            Description = "Overdraft"
+            Description = "Overdraft ("+ amount.ToString("C") + ")"
         });
     }
     // commit these changes
