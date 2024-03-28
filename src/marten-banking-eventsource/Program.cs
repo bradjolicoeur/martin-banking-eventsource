@@ -3,6 +3,7 @@ using Accounting.Projections;
 using Marten;
 using Marten.Events.Projections;
 using System;
+using Weasel.Core;
 using Weasel.Postgresql;
 
 var store = DocumentStore.For(opts =>
@@ -11,7 +12,7 @@ var store = DocumentStore.For(opts =>
 
     opts.AutoCreateSchemaObjects = AutoCreate.All; //.All will wipe out the schema each time this is run
 
-    opts.Projections.SelfAggregate<Account>(ProjectionLifecycle.Inline); //Configure inline projection
+    opts.Projections.Add<AccountProjection>(ProjectionLifecycle.Inline); //Configure inline projection
 
 });
 
