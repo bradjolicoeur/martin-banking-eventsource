@@ -4,7 +4,6 @@ using Marten;
 using Marten.Events.Projections;
 using System;
 using Weasel.Core;
-using Weasel.Postgresql;
 
 var store = DocumentStore.For(opts =>
 {

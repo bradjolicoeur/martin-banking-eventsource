@@ -1,9 +1,6 @@
 ﻿using Accounting.Events;
 using System;
-using Marten;
 using Marten.Events.Aggregation;
-using Marten.Events.Projections;
-using System.Security.Principal;
 
 namespace Accounting.Projections
 {
