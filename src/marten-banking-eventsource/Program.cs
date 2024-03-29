@@ -30,7 +30,7 @@ var bill = new AccountCreated
 };
 
 // Create Accounts
-using (var session = store.OpenSession())
+using (var session = store.LightweightSession())
 {
     // create banking accounts
     session.Events.StartStream(khalid.AccountId, khalid);
@@ -40,7 +40,7 @@ using (var session = store.OpenSession())
 }
 
 // First Transaction
-using (var session = store.OpenSession())
+using (var session = store.LightweightSession())
 {
     // load khalid's account
     var account = session.Load<Account>(khalid.AccountId);
@@ -64,7 +64,7 @@ using (var session = store.OpenSession())
 }
 
 // Second Transaction
-using (var session = store.OpenSession())
+using (var session = store.LightweightSession())
 {
     // load bill's account
     var account = session.Load<Account>(bill.AccountId);

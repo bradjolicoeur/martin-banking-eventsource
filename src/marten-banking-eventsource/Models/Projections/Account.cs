@@ -13,8 +13,6 @@ namespace Accounting.Projections
 
         public DateTimeOffset UpdatedAt { get; set; }
 
-      
-
         public bool HasSufficientFunds(AccountDebited debit)
         {
             var result = (Balance - debit.Amount) >= 0;
